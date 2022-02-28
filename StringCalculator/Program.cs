@@ -6,7 +6,9 @@ namespace StringCalculator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var calculatorApp = new CalculatorApp(new Calculator());
+            
+            calculatorApp.Start();
         }
     }
 }
