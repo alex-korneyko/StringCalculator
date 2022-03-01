@@ -7,7 +7,7 @@ namespace StringCalculator.Tests
         [Fact]
         public void Add_EmptyString_ShouldReturnZero()
         {
-            ICalculator calculator = new Calculator();
+            var calculator = new Calculator();
 
             var actual = calculator.Add("");
             
@@ -17,7 +17,7 @@ namespace StringCalculator.Tests
         [Fact]
         public void Add_OneArgString_ShouldReturnInt()
         {
-            ICalculator calculator = new Calculator();
+            var calculator = new Calculator();
 
             var actual = calculator.Add("5");
             
@@ -27,7 +27,7 @@ namespace StringCalculator.Tests
         [Fact]
         public void Add_TwoArgsString_ShouldReturnInt()
         {
-            ICalculator calculator = new Calculator();
+            var calculator = new Calculator();
 
             var actual = calculator.Add("5,7");
             
@@ -37,7 +37,7 @@ namespace StringCalculator.Tests
         [Fact]
         public void AddTwoArgsNegStringTest()
         {
-            ICalculator calculator = new Calculator();
+            var calculator = new Calculator();
 
             var actual = calculator.Add("5,-7");
             

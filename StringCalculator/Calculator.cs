@@ -2,7 +2,7 @@
 
 namespace StringCalculator
 {
-    public class Calculator : ICalculator
+    public class Calculator
     {
         public int Add(string values)
         {
