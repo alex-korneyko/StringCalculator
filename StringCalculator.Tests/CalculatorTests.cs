@@ -100,5 +100,20 @@ namespace StringCalculator.Tests
             
             Assert.Equal(7, actual);
         }
+        
+        [Fact]
+        public void Add_AnyLengthDelimiter_ShouldReturnInt()
+        {
+            var calculator = new Calculator();
+
+            var actual = calculator.Add("//[***]\n1***2***3");
+            Assert.Equal(6, actual);
+
+            actual = calculator.Add("//[abc]\n1abc2\n3");
+            Assert.Equal(6, actual);
+            
+            actual = calculator.Add("//[a!23bc]\n1a!23bc2\n3");
+            Assert.Equal(6, actual);
+        }
     }
 }

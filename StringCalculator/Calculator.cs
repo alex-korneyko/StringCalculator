@@ -19,10 +19,16 @@ namespace StringCalculator
             if (values.StartsWith("//"))
             {
                 var separatorLine = values.Split("\n")[0];
-                if (separatorLine.Length == 3)
+                switch (separatorLine.Length)
                 {
-                    separator = separatorLine[2..];
-                    values = values[4..];
+                    case 3:
+                        separator = separatorLine[2..];
+                        values = values[4..];
+                        break;
+                    case > 3:
+                        separator = separatorLine[3..^1];
+                        values = values.Substring(separatorLine.Length + 1);
+                        break;
                 }
             }
 
