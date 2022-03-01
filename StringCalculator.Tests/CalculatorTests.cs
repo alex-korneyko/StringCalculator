@@ -90,5 +90,15 @@ namespace StringCalculator.Tests
                 calculator.Add("//;\n1\n-2;3");
             });
         }
+        
+        [Fact]
+        public void Add_BiggerThan1000_ShouldBeIgnored()
+        {
+            var calculator = new Calculator();
+
+            var actual = calculator.Add("2,5,1001");
+            
+            Assert.Equal(7, actual);
+        }
     }
 }

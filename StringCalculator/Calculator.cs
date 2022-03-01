@@ -40,7 +40,7 @@ namespace StringCalculator
                 throw new Exception(message.Remove(message.Length - 2, 2).Append(']').ToString());
             }
 
-            var result = ints.Sum();
+            var result = ints.Where(value => value <= 1000).Sum();
 
             return result;
         }
