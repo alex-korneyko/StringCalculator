@@ -122,7 +122,9 @@ namespace StringCalculator.Tests
             var calculator = new Calculator();
 
             var actual = calculator.Add("//[*][%]\n1*2%3\n4");
+            Assert.Equal(10, actual);
             
+            actual = calculator.Add("//[**][%@;]\n1**2%@;3\n4");
             Assert.Equal(10, actual);
         }
     }

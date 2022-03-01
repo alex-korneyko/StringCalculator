@@ -36,7 +36,6 @@ namespace StringCalculator
                                 separators.Add(separatorWithBrackets);
                             });
                         
-                        separators.Add(separatorLine[3..^1]);
                         values = values.Substring(separatorLine.Length + 1);
                         break;
                 }
