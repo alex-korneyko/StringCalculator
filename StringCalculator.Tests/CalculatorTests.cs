@@ -115,5 +115,15 @@ namespace StringCalculator.Tests
             actual = calculator.Add("//[a!23bc]\n1a!23bc2\n3");
             Assert.Equal(6, actual);
         }
+        
+        [Fact]
+        public void Add_MultipleDelimiters_ShouldReturnInt()
+        {
+            var calculator = new Calculator();
+
+            var actual = calculator.Add("//[*][%]\n1*2%3\n4");
+            
+            Assert.Equal(10, actual);
+        }
     }
 }
