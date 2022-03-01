@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace StringCalculator.Tests
@@ -43,17 +44,7 @@ namespace StringCalculator.Tests
             
             Assert.Equal(23, actual);
         }
-        
-        [Fact]
-        public void AddTwoArgsNegStringTest()
-        {
-            var calculator = new Calculator();
 
-            var actual = calculator.Add("5,-7");
-            
-            Assert.Equal(-2, actual);
-        }
-        
         [Fact]
         public void Add_NewLineSeparatorBetweenValues_ShouldInt()
         {
@@ -77,6 +68,27 @@ namespace StringCalculator.Tests
             
             actual = calculator.Add("//@\n1@2\n3@5");
             Assert.Equal(11, actual);
+        }
+
+        [Fact]
+        public void Add_NegativeValues_ShouldThrowAnException()
+        {
+            var calculator = new Calculator();
+
+            Assert.Throws<Exception>(() =>
+            {
+                calculator.Add("1,-2");
+            });
+            
+            Assert.Throws<Exception>(() =>
+            {
+                calculator.Add("1\n-2");
+            });
+            
+            Assert.Throws<Exception>(() =>
+            {
+                calculator.Add("//;\n1\n-2;3");
+            });
         }
     }
 }
