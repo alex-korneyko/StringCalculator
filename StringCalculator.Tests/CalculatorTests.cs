@@ -35,6 +35,16 @@ namespace StringCalculator.Tests
         }
         
         [Fact]
+        public void Add_UnknownAmountNumbers_ShouldReturnInt()
+        {
+            var calculator = new Calculator();
+
+            var actual = calculator.Add("5,7,3,2,6");
+            
+            Assert.Equal(23, actual);
+        }
+        
+        [Fact]
         public void AddTwoArgsNegStringTest()
         {
             var calculator = new Calculator();
