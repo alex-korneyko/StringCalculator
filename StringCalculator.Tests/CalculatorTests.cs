@@ -43,5 +43,15 @@ namespace StringCalculator.Tests
             
             Assert.Equal(-2, actual);
         }
+        
+        [Fact]
+        public void Add_NewLineSeparatorBetweenValues_ShouldInt()
+        {
+            var calculator = new Calculator();
+
+            var actual = calculator.Add("5\n7,3\n5");
+            
+            Assert.Equal(20, actual);
+        }
     }
 }

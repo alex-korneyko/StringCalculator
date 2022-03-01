@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace StringCalculator
 {
@@ -9,7 +10,12 @@ namespace StringCalculator
             if (values.Equals(""))
                 return 0;
 
-            var stringNums = values.Split(',');
+            var stringNums = new List<string>();
+
+            values
+                .Split(',')
+                .ToList().Select(commaSeparated => commaSeparated.Split("\n"))
+                .ToList().ForEach(newLineSeparated => stringNums.AddRange(newLineSeparated));
 
             var result = stringNums.ToList().Select(int.Parse).Sum();
 
