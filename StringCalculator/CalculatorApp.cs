@@ -4,15 +4,10 @@ namespace StringCalculator
 {
     public class CalculatorApp
     {
-        private readonly ICalculator _calculator;
-
-        public CalculatorApp(ICalculator calculator)
-        {
-            _calculator = calculator;
-        }
-        
         public void Start()
         {
+            var calculator = new Calculator();
+            
             for (;;)
             {
                 Console.Write("Enter numbers separated by commas (exit for Exit): ");
@@ -21,7 +16,7 @@ namespace StringCalculator
                 
                 if (stringNumbers.ToLower().Equals("exit")) break;
 
-                Console.WriteLine($"Sum: {_calculator.Add(stringNumbers)}");
+                Console.WriteLine($"Sum: {calculator.Add(stringNumbers)}");
             }
         }
     }

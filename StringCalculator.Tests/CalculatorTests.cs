@@ -2,10 +2,10 @@ using Xunit;
 
 namespace StringCalculator.Tests
 {
-    public class StringCalculatorMainTests
+    public class CalculatorTests
     {
         [Fact]
-        public void AddEmptyStringTest()
+        public void Add_EmptyString_ShouldReturnZero()
         {
             ICalculator calculator = new Calculator();
 
@@ -15,7 +15,7 @@ namespace StringCalculator.Tests
         }
         
         [Fact]
-        public void AddOneArgStringTest()
+        public void Add_OneArgString_ShouldReturnInt()
         {
             ICalculator calculator = new Calculator();
 
@@ -25,7 +25,7 @@ namespace StringCalculator.Tests
         }
         
         [Fact]
-        public void AddTwoArgsStringTest()
+        public void Add_TwoArgsString_ShouldReturnInt()
         {
             ICalculator calculator = new Calculator();
 
