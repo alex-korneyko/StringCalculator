@@ -33,5 +33,15 @@ namespace StringCalculator.Tests
             
             Assert.Equal(12, actual);
         }
+        
+        [Fact]
+        public void AddTwoArgsNegStringTest()
+        {
+            ICalculator calculator = new Calculator();
+
+            var actual = calculator.Add("5,-7");
+            
+            Assert.Equal(-2, actual);
+        }
     }
 }
