@@ -63,5 +63,20 @@ namespace StringCalculator.Tests
             
             Assert.Equal(20, actual);
         }
+        
+        [Fact]
+        public void Add_DifferentDelimiters_ShouldReturnInt()
+        {
+            var calculator = new Calculator();
+
+            var actual = calculator.Add("//;\n1;2");
+            Assert.Equal(3, actual);
+
+            actual = calculator.Add("//:\n1:2\n3");
+            Assert.Equal(6, actual);
+            
+            actual = calculator.Add("//@\n1@2\n3@5");
+            Assert.Equal(11, actual);
+        }
     }
 }
