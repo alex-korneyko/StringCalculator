@@ -127,5 +127,14 @@ namespace StringCalculator.Tests
             actual = calculator.Add("//[**][%@;]\n1**2%@;3\n4");
             Assert.Equal(10, actual);
         }
+        
+        [Fact]
+        public void Add_MultipleDelimitersWithBrackets_ShouldReturnInt()
+        {
+            var calculator = new Calculator();
+            
+            var actual = calculator.Add("//[*][[[[%]]\n1*2[[[%]3\n4");
+            Assert.Equal(10, actual);
+        }
     }
 }

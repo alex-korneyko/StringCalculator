@@ -19,24 +19,30 @@ namespace StringCalculator
             if (values.StartsWith("//"))
             {
                 separators.Clear();
+                values = values.Replace("//", "");
                 var separatorLine = values.Split("\n")[0];
                 switch (separatorLine.Length)
                 {
-                    case 3:
-                        separators.Add(separatorLine[2..]);
-                        values = values[4..];
+                    case 1:
+                        separators.Add(separatorLine);
+                        values = values[2..];
                         break;
-                    case > 3:
+                    case > 1:
+                        separatorLine = separatorLine.StartsWith('[')
+                            ? separatorLine.Remove(0, 1)
+                            : separatorLine;
+
+                        separatorLine = separatorLine.EndsWith(']')
+                            ? separatorLine.Remove(separatorLine.Length - 1, 1)
+                            : separatorLine;
+                        
                         separatorLine.Split("][")
                             .ToList().ForEach(separatorWithBrackets =>
                             {
-                                separatorWithBrackets = separatorWithBrackets.Replace("[", "");
-                                separatorWithBrackets = separatorWithBrackets.Replace("]", "");
-                                separatorWithBrackets = separatorWithBrackets.Replace("//", "");
                                 separators.Add(separatorWithBrackets);
                             });
                         
-                        values = values.Substring(separatorLine.Length + 1);
+                        values = values.Substring(separatorLine.Length + 3);
                         break;
                 }
             }
