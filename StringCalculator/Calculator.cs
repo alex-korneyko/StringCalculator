@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace StringCalculator
 {
@@ -9,61 +8,77 @@ namespace StringCalculator
     {
         public int Add(string values)
         {
-            var separators = new List<string>{","};
+            if (values.Equals("")) return 0;
 
-            if (values.Equals(""))
-                return 0;
+            var delimiters = GetDelimiters(values);
 
-            var stringNums = new List<string>();
+            var integers = GetArguments(values, delimiters);
+            
+            CheckNegatives(integers);
 
-            if (values.StartsWith("//"))
-            {
-                separators.Clear();
-                values = values.Replace("//", "");
-                var separatorLine = values.Split("\n")[0];
-                switch (separatorLine.Length)
-                {
-                    case 1:
-                        separators.Add(separatorLine);
-                        values = values[2..];
-                        break;
-                    case > 1:
-                        separatorLine = separatorLine.StartsWith('[')
-                            ? separatorLine.Remove(0, 1)
-                            : separatorLine;
-
-                        separatorLine = separatorLine.EndsWith(']')
-                            ? separatorLine.Remove(separatorLine.Length - 1, 1)
-                            : separatorLine;
-                        
-                        separatorLine.Split("][")
-                            .ToList().ForEach(separatorWithBrackets =>
-                            {
-                                separators.Add(separatorWithBrackets);
-                            });
-                        
-                        values = values.Substring(separatorLine.Length + 3);
-                        break;
-                }
-            }
-
-            values
-                .Split(separators.ToArray(), StringSplitOptions.RemoveEmptyEntries)
-                .ToList().Select(commaSeparated => commaSeparated.Split("\n"))
-                .ToList().ForEach(newLineSeparated => stringNums.AddRange(newLineSeparated));
-
-            var ints = stringNums.Select(int.Parse).ToList();
-            var negativeNums = ints.Where(value => value < 0).ToList();
-            if (negativeNums.Any())
-            {
-                var message = new StringBuilder("Negatives not allowed [");
-                negativeNums.ToList().ForEach(value => message.Append(value).Append(", "));
-                throw new Exception(message.Remove(message.Length - 2, 2).Append(']').ToString());
-            }
-
-            var result = ints.Where(value => value <= 1000).Sum();
+            var result = integers.Where(value => value <= 1000).Sum();
 
             return result;
+        }
+
+        private void CheckNegatives(IList<int> integers)
+        {
+            if (integers.FirstOrDefault(value => value < 0) == default) return;
+            
+            var message = "Negatives not allowed [";
+
+            foreach (var negativeNum in integers.Where(value => value < 0))
+            {
+                message += negativeNum + ", ";
+            }
+
+            throw new Exception(message.RemoveIfEndsWith(", ") + ']');
+        }
+
+        private string[] GetDelimiters(string rawInputString)
+        {
+            if (!rawInputString.StartsWith("//")) return new []{","};
+            
+            var delimiters = new List<string>();
+
+            rawInputString = rawInputString.Replace("//", "");
+            var separatorsLine = rawInputString.Split("\n")[0];
+            
+            switch (separatorsLine.Length)
+            {
+                case 1:
+                    delimiters.Add(separatorsLine);
+                    break;
+                case > 1:
+                    separatorsLine = separatorsLine.RemoveIfStartsWith("[").RemoveIfEndsWith("]");
+                    delimiters.AddRange(separatorsLine.Split("]["));
+                    break;
+            }
+
+            return delimiters.ToArray();
+        }
+
+        private IList<int> GetArguments(string rawInputString, string[] delimiters)
+        {
+            if (rawInputString.StartsWith("//"))
+            {
+                rawInputString = rawInputString.Remove(0, rawInputString.IndexOf('\n') + 1);
+            }
+            
+            var stringNumbers = new List<string>();
+            
+            var separatedByDelimitersAndNewLines = rawInputString
+                .Split(delimiters, StringSplitOptions.RemoveEmptyEntries)
+                .Select(separatedByDelimiters => separatedByDelimiters.Split("\n"));
+                
+            foreach (var separatedByNewLines in separatedByDelimitersAndNewLines)
+            {
+                stringNumbers.AddRange(separatedByNewLines);
+            }
+
+            var ints = stringNumbers.Select(int.Parse).ToList();
+
+            return ints;
         }
     }
 }
