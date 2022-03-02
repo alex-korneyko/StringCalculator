@@ -75,20 +75,24 @@ namespace StringCalculator.Tests
         {
             var calculator = new Calculator();
 
-            Assert.Throws<Exception>(() =>
+            var exception = Assert.Throws<Exception>(() =>
             {
                 calculator.Add("1,-2");
             });
             
-            Assert.Throws<Exception>(() =>
+            Assert.Equal("Negatives not allowed [-2]", exception.Message);
+
+            exception = Assert.Throws<Exception>(() =>
             {
-                calculator.Add("1\n-2");
+                calculator.Add("1\n-3");
             });
+            Assert.Equal("Negatives not allowed [-3]", exception.Message);
             
-            Assert.Throws<Exception>(() =>
+            exception = Assert.Throws<Exception>(() =>
             {
-                calculator.Add("//;\n1\n-2;3");
+                calculator.Add("//;\n1\n-2;-3");
             });
+            Assert.Equal("Negatives not allowed [-2, -3]", exception.Message);
         }
         
         [Fact]
