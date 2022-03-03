@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StringCalculator
 {
-    public class Calculator
+    public class Calculator : ICalculator
     {
         public int Add(string values)
         {

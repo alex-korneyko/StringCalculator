@@ -6,7 +6,7 @@ namespace Presentation
     {
         static void Main(string[] args)
         {
-            var app = new App(new Calculator());
+            var app = new App(new Calculator(), new ConsoleController());
             
             app.Start();
         }
