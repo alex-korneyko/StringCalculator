@@ -1,6 +1,6 @@
 ﻿namespace StringCalculator
 {
-    public static class Extends
+    public static class StringExtension
     {
         public static string RemoveIfStartsWith(this string inputString, string value)
         {
