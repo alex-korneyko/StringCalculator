@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace StringCalculator
 {
@@ -8,36 +9,40 @@ namespace StringCalculator
     {
         public int Add(string values)
         {
-            if (values.Equals("")) return 0;
+            if (values.Equals("")) 
+                return 0;
 
             var delimiters = GetDelimiters(values);
-
             var integers = GetArguments(values, delimiters);
             
             CheckNegatives(integers);
 
-            var result = integers.Where(value => value <= 1000).Sum();
+            var result = integers
+                .Where(value => value <= 1000)
+                .Sum();
 
             return result;
         }
 
         private void CheckNegatives(IList<int> integers)
         {
-            if (integers.FirstOrDefault(value => value < 0) == default) return;
+            var anyNegative = integers.FirstOrDefault(value => value < 0);
             
-            var message = "Negatives not allowed [";
+            if (anyNegative == default) 
+                return;
+            
+            var message = new StringBuilder("Negatives not allowed [");
 
-            foreach (var negativeNum in integers.Where(value => value < 0))
-            {
-                message += negativeNum + ", ";
-            }
+            var negatives = integers.Where(value => value < 0);
+            
+            message.AppendJoin(", ", negatives).Append(']');
 
-            throw new Exception(message.RemoveIfEndsWith(", ") + ']');
+            throw new Exception(message.ToString());
         }
 
-        private string[] GetDelimiters(string rawInputString)
+        private IList<string> GetDelimiters(string rawInputString)
         {
-            if (!rawInputString.StartsWith("//")) return new []{","};
+            if (!rawInputString.StartsWith("//")) return new List<string>{","};
             
             var delimiters = new List<string>();
 
@@ -55,10 +60,10 @@ namespace StringCalculator
                     break;
             }
 
-            return delimiters.ToArray();
+            return delimiters;
         }
 
-        private IList<int> GetArguments(string rawInputString, string[] delimiters)
+        private IList<int> GetArguments(string rawInputString, IList<string> delimiters)
         {
             if (rawInputString.StartsWith("//"))
             {
@@ -68,7 +73,7 @@ namespace StringCalculator
             var stringNumbers = new List<string>();
             
             var separatedByDelimitersAndNewLines = rawInputString
-                .Split(delimiters, StringSplitOptions.RemoveEmptyEntries)
+                .Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries)
                 .Select(separatedByDelimiters => separatedByDelimiters.Split("\n"));
                 
             foreach (var separatedByNewLines in separatedByDelimitersAndNewLines)
@@ -76,9 +81,11 @@ namespace StringCalculator
                 stringNumbers.AddRange(separatedByNewLines);
             }
 
-            var ints = stringNumbers.Select(int.Parse).ToList();
+            var integers = stringNumbers
+                .Select(int.Parse)
+                .ToList();
 
-            return ints;
+            return integers;
         }
     }
 }

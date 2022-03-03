@@ -55,44 +55,33 @@ namespace StringCalculator.Tests
             Assert.Equal(20, actual);
         }
         
-        [Fact]
-        public void Add_DifferentDelimiters_ShouldReturnInt()
+        [Theory]
+        [InlineData("//;\n1;2", 3)]
+        [InlineData("//:\n1:2\n3", 6)]
+        [InlineData("//@\n1@2\n3@5", 11)]
+        public void Add_DifferentDelimiters_ShouldReturnInt(string rawStringValues, int expected)
         {
             var calculator = new Calculator();
 
-            var actual = calculator.Add("//;\n1;2");
-            Assert.Equal(3, actual);
-
-            actual = calculator.Add("//:\n1:2\n3");
-            Assert.Equal(6, actual);
+            var actual = calculator.Add(rawStringValues);
             
-            actual = calculator.Add("//@\n1@2\n3@5");
-            Assert.Equal(11, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void Add_NegativeValues_ShouldThrowAnException()
+        [Theory]
+        [InlineData("1,-2", "Negatives not allowed [-2]")]
+        [InlineData("1\n-3", "Negatives not allowed [-3]")]
+        [InlineData("//;\n1\n-2;-3", "Negatives not allowed [-2, -3]")]
+        public void Add_NegativeValues_ShouldThrowAnException(string rawStringValues, string expectedExceptionMessage)
         {
             var calculator = new Calculator();
 
             var exception = Assert.Throws<Exception>(() =>
             {
-                calculator.Add("1,-2");
+                calculator.Add(rawStringValues);
             });
             
-            Assert.Equal("Negatives not allowed [-2]", exception.Message);
-
-            exception = Assert.Throws<Exception>(() =>
-            {
-                calculator.Add("1\n-3");
-            });
-            Assert.Equal("Negatives not allowed [-3]", exception.Message);
-            
-            exception = Assert.Throws<Exception>(() =>
-            {
-                calculator.Add("//;\n1\n-2;-3");
-            });
-            Assert.Equal("Negatives not allowed [-2, -3]", exception.Message);
+            Assert.Equal(expectedExceptionMessage, exception.Message);
         }
         
         [Fact]
@@ -105,40 +94,38 @@ namespace StringCalculator.Tests
             Assert.Equal(7, actual);
         }
         
-        [Fact]
-        public void Add_AnyLengthDelimiter_ShouldReturnInt()
+        [Theory]
+        [InlineData("//[***]\n1***2***3", 6)]
+        [InlineData("//[abc]\n1abc2\n3", 6)]
+        [InlineData("//[a!23bc]\n1a!23bc2\n3", 6)]
+        public void Add_AnyLengthDelimiter_ShouldReturnInt(string rawStringValues, int expected)
         {
             var calculator = new Calculator();
 
-            var actual = calculator.Add("//[***]\n1***2***3");
-            Assert.Equal(6, actual);
-
-            actual = calculator.Add("//[abc]\n1abc2\n3");
-            Assert.Equal(6, actual);
-            
-            actual = calculator.Add("//[a!23bc]\n1a!23bc2\n3");
-            Assert.Equal(6, actual);
+            var actual = calculator.Add(rawStringValues);
+            Assert.Equal(expected, actual);
         }
         
-        [Fact]
-        public void Add_MultipleDelimiters_ShouldReturnInt()
+        [Theory]
+        [InlineData("//[*][%]\n1*2%3\n4", 10)]
+        [InlineData("//[**][%@;]\n1**2%@;3\n4", 10)]
+        public void Add_MultipleDelimiters_ShouldReturnInt(string rawStringValues, int expected)
         {
             var calculator = new Calculator();
 
-            var actual = calculator.Add("//[*][%]\n1*2%3\n4");
-            Assert.Equal(10, actual);
-            
-            actual = calculator.Add("//[**][%@;]\n1**2%@;3\n4");
-            Assert.Equal(10, actual);
+            var actual = calculator.Add(rawStringValues);
+            Assert.Equal(expected, actual);
         }
         
-        [Fact]
-        public void Add_MultipleDelimitersWithBrackets_ShouldReturnInt()
+        [Theory]
+        [InlineData("//[x]]\n5x]5", 10)]
+        [InlineData("//[*][[[x]]]]]\n1*2[[x]]]]3\n4", 10)]
+        public void Add_MultipleDelimitersWithBrackets_ShouldReturnInt(string rawStringValues, int expected)
         {
             var calculator = new Calculator();
             
-            var actual = calculator.Add("//[*][[[[%]]\n1*2[[[%]3\n4");
-            Assert.Equal(10, actual);
+            var actual = calculator.Add(rawStringValues);
+            Assert.Equal(expected, actual);
         }
     }
 }
