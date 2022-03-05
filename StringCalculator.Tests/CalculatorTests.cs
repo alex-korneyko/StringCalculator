@@ -50,15 +50,15 @@ namespace StringCalculator.Tests
         {
             var calculator = new Calculator();
 
-            var actual = calculator.Add("5\n7,3\n5");
+            var actual = calculator.Add(@"5\n7,3\n5");
             
             Assert.Equal(20, actual);
         }
         
         [Theory]
-        [InlineData("//;\n1;2", 3)]
-        [InlineData("//:\n1:2\n3", 6)]
-        [InlineData("//@\n1@2\n3@5", 11)]
+        [InlineData(@"//;\n1;2", 3)]
+        [InlineData(@"//:\n1:2\n3", 6)]
+        [InlineData(@"//@\n1@2\n3@5", 11)]
         public void Add_DifferentDelimiters_ShouldReturnInt(string rawStringValues, int expected)
         {
             var calculator = new Calculator();
@@ -67,11 +67,11 @@ namespace StringCalculator.Tests
             
             Assert.Equal(expected, actual);
         }
-
+        
         [Theory]
         [InlineData("1,-2", "Negatives not allowed [-2]")]
-        [InlineData("1\n-3", "Negatives not allowed [-3]")]
-        [InlineData("//;\n1\n-2;-3", "Negatives not allowed [-2, -3]")]
+        [InlineData(@"1\n-3", "Negatives not allowed [-3]")]
+        [InlineData(@"//;\n1\n-2;-3", "Negatives not allowed [-2, -3]")]
         public void Add_NegativeValues_ShouldThrowAnException(string rawStringValues, string expectedExceptionMessage)
         {
             var calculator = new Calculator();
@@ -95,9 +95,9 @@ namespace StringCalculator.Tests
         }
         
         [Theory]
-        [InlineData("//[***]\n1***2***3", 6)]
-        [InlineData("//[abc]\n1abc2\n3", 6)]
-        [InlineData("//[a!23bc]\n1a!23bc2\n3", 6)]
+        [InlineData(@"//[***]\n1***2***3", 6)]
+        [InlineData(@"//[abc]\n1abc2\n3", 6)]
+        [InlineData(@"//[a!23bc]\n1a!23bc2\n3", 6)]
         public void Add_AnyLengthDelimiter_ShouldReturnInt(string rawStringValues, int expected)
         {
             var calculator = new Calculator();
@@ -107,8 +107,8 @@ namespace StringCalculator.Tests
         }
         
         [Theory]
-        [InlineData("//[*][%]\n1*2%3\n4", 10)]
-        [InlineData("//[**][%@;]\n1**2%@;3\n4", 10)]
+        [InlineData(@"//[*][%]\n1*2%3\n4", 10)]
+        [InlineData(@"//[**][%@;]\n1**2%@;3\n4", 10)]
         public void Add_MultipleDelimiters_ShouldReturnInt(string rawStringValues, int expected)
         {
             var calculator = new Calculator();
@@ -118,8 +118,8 @@ namespace StringCalculator.Tests
         }
         
         [Theory]
-        [InlineData("//[x]]\n5x]5", 10)]
-        [InlineData("//[*][[[x]]]]]\n1*2[[x]]]]3\n4", 10)]
+        [InlineData(@"//[x]]\n5x]5", 10)]
+        [InlineData(@"//[*][[[x]]]]]\n1*2[[x]]]]3\n4", 10)]
         public void Add_MultipleDelimitersWithBrackets_ShouldReturnInt(string rawStringValues, int expected)
         {
             var calculator = new Calculator();

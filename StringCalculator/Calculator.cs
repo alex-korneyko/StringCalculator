@@ -47,7 +47,7 @@ namespace StringCalculator
             var delimiters = new List<string>();
 
             rawInputString = rawInputString.Replace("//", "");
-            var separatorsLine = rawInputString.Split("\n")[0];
+            var separatorsLine = rawInputString.Split(@"\n")[0];
             
             switch (separatorsLine.Length)
             {
@@ -67,14 +67,14 @@ namespace StringCalculator
         {
             if (rawInputString.StartsWith("//"))
             {
-                rawInputString = rawInputString.Remove(0, rawInputString.IndexOf('\n') + 1);
+                rawInputString = rawInputString.Remove(0, rawInputString.IndexOf(@"\n", StringComparison.InvariantCulture) + @"\n".Length);
             }
             
             var stringNumbers = new List<string>();
             
             var separatedByDelimitersAndNewLines = rawInputString
                 .Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries)
-                .Select(separatedByDelimiters => separatedByDelimiters.Split("\n"));
+                .Select(separatedByDelimiters => separatedByDelimiters.Split(@"\n"));
                 
             foreach (var separatedByNewLines in separatedByDelimitersAndNewLines)
             {
